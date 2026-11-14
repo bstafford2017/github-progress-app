@@ -8,11 +8,9 @@ interface TaskProps {
 }
 
 export const TaskRecorder: React.FC<TaskProps> = ({ taskName, taskDescription, purpose }) => {
-  const addChange = useChangeStore((state) => state.addChange);
-
   useEffect(() => {
-    // Auto-record task in the app
-    addChange({
+    // Auto-record task in the app - use getState() to avoid infinite loop
+    useChangeStore.getState().addChange({
       title: taskName,
       description: taskDescription,
       purpose: purpose,
@@ -20,7 +18,7 @@ export const TaskRecorder: React.FC<TaskProps> = ({ taskName, taskDescription, p
       prUrl: undefined,
       branchName: undefined,
     });
-  }, [taskName, taskDescription, purpose, addChange]);
+  }, [taskName, taskDescription, purpose]);
 
   return null;
 };
